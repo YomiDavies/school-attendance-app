@@ -45,24 +45,32 @@
                 }
             });
 
-            // Check if API initialized
-            console.log("API object:", API); // This confirms if API is set up correctly.
+            console.log("API configuration completed."); // Debug log
 
             async function submitAttendance() {
+                console.log("Submit button clicked."); // Debug log
+
                 const studentID = document.getElementById('studentID').value;
                 const attendanceStatus = document.getElementById('attendanceStatus').value;
+
+                if (!studentID || !attendanceStatus) {
+                    document.getElementById('message').innerText = 'Please enter both Student ID and Attendance Status.';
+                    return;
+                }
 
                 const attendanceData = { studentID, status: attendanceStatus };
 
                 try {
+                    console.log("Submitting attendance data:", attendanceData); // Debug log
                     const response = await API.post('AttendanceAPI', '/attendance', { body: attendanceData });
+                    console.log("API response:", response); // Debug log
                     document.getElementById('message').innerText = 'Attendance submitted successfully!';
                 } catch (error) {
+                    console.error("Error submitting attendance:", error); // Debug log
                     document.getElementById('message').innerText = 'Error submitting attendance: ' + error.message;
                 }
             }
 
-            // Expose submitAttendance to the global scope so the button can access it
             window.submitAttendance = submitAttendance;
         };
     </script>
