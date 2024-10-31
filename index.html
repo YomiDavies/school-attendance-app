@@ -26,6 +26,8 @@
 
         // Configure Amplify with the details from your AWS Console setup
         Amplify.configure({
+            console.log(API); // This will print out API to confirm it loaded.
+
             Auth: {
                 region: 'ca-central-1',
                 userPoolId: 'ca-central-1_9WYpWIKUS',
