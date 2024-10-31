@@ -35,7 +35,7 @@
                 endpoints: [
                     {
                         name: "AttendanceAPI",
-                        endpoint: "YOUR_API_GATEWAY_ENDPOINT",
+                        endpoint: "https://5goya10q04.execute-api.ca-central-1.amazonaws.com/dev",
                         custom_header: async () => { 
                             return { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` }
                         }
