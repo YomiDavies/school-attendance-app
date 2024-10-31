@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Attendance App</title>
+    <script src="https://cdn.jsdelivr.net/npm/aws-amplify@latest/dist/aws-amplify.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: auto; padding: 20px; }
+        input { margin: 10px 0; padding: 10px; width: 100%; }
+        button { padding: 10px; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>School Attendance App</h1>
+        <input type="text" id="studentID" placeholder="Enter Student ID" />
+        <input type="text" id="attendanceStatus" placeholder="Enter Status (Present/Absent)" />
+        <button onclick="submitAttendance()">Submit Attendance</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const { Amplify, Auth, API } = window.AWSAmplify;
+
+        // Configure Amplify with the details from your AWS Console setup
+        Amplify.configure({
+            Auth: {
+                region: 'ca-central-1',
+                userPoolId: 'YOUR_USER_POOL_ID',
+                userPoolWebClientId: 'YOUR_APP_CLIENT_ID',
+                identityPoolId: 'YOUR_IDENTITY_POOL_ID'
+            },
+            API: {
+                endpoints: [
+                    {
+                        name: "AttendanceAPI",
+                        endpoint: "YOUR_API_GATEWAY_ENDPOINT",
+                        custom_header: async () => { 
+                            return { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` }
+                        }
+                    }
+                ]
+            }
+        });
+
+        async function submitAttendance() {
+            const studentID = document.getElementById('studentID').value;
+            const attendanceStatus = document.getElementById('attendanceStatus').value;
+
+            const attendanceData = { studentID, status: attendanceStatus };
+
+            try {
+                const response = await API.post('AttendanceAPI', '/attendance', { body: attendanceData });
+                document.getElementById('message').innerText = 'Attendance submitted successfully!';
+            } catch (error) {
+                document.getElementById('message').innerText = 'Error submitting attendance: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
