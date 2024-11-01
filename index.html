@@ -24,30 +24,37 @@
     <script>
         const { Amplify, Auth, API } = window.AWSAmplify;
 
-        // Configure Amplify with the details from your AWS Console setup
-        window.onload = () => {
-            Amplify.configure({
-                Auth: {
-                    region: 'ca-central-1',
-                    userPoolId: 'ca-central-1_9WYpWIKUS',
-                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm'
-                },
-                API: {
-                    endpoints: [
-                        {
-                            name: "AttendanceAPI",
-                            endpoint: "https://5goya10q04.execute-api.ca-central-1.amazonaws.com/dev",
-                            custom_header: async () => { 
-                                return { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` }
+        window.onload = async () => {
+            try {
+                // Configure Amplify
+                Amplify.configure({
+                    Auth: {
+                        region: 'ca-central-1',
+                        userPoolId: 'ca-central-1_9WYpWIKUS',
+                        userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm'
+                    },
+                    API: {
+                        endpoints: [
+                            {
+                                name: "AttendanceAPI",
+                                endpoint: "https://5goya10q04.execute-api.ca-central-1.amazonaws.com/dev",
+                                custom_header: async () => { 
+                                    return { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` }
+                                }
                             }
-                        }
-                    ]
-                }
-            });
+                        ]
+                    }
+                });
+
+                console.log("Amplify configured successfully."); // Confirm Amplify is configured
+            } catch (error) {
+                console.error("Error configuring Amplify:", error);
+                document.getElementById('message').innerText = 'Error configuring Amplify. Check console for details.';
+            }
         };
 
         async function submitAttendance() {
-            console.log("submitAttendance function is running."); // Debug log
+            console.log("submitAttendance function triggered."); // Debug log
 
             const studentID = document.getElementById('studentID').value;
             const attendanceStatus = document.getElementById('attendanceStatus').value;
@@ -61,18 +68,21 @@
             const attendanceData = { studentID, status: attendanceStatus };
             console.log("Attendance data prepared:", attendanceData); // Debug log
 
+            // Skip API Call for Testing
+            document.getElementById('message').innerText = 'Attendance data prepared. API call skipped for testing.';
+            
             try {
-                console.log("Submitting attendance data:", attendanceData); // Debug log
-                const response = await API.post('AttendanceAPI', '/attendance', { body: attendanceData });
-                console.log("API response:", response); // Debug log
-                document.getElementById('message').innerText = 'Attendance submitted successfully!';
+                // Uncomment the API call below to test after verifying configuration
+                // const response = await API.post('AttendanceAPI', '/attendance', { body: attendanceData });
+                // console.log("API response:", response); // Debug log
+                // document.getElementById('message').innerText = 'Attendance submitted successfully!';
             } catch (error) {
                 console.error("Error submitting attendance:", error); // Debug log
                 document.getElementById('message').innerText = 'Error submitting attendance: ' + error.message;
             }
         }
 
-        // Make submitAttendance function available globally
+        // Expose submitAttendance function to global scope
         window.submitAttendance = submitAttendance;
     </script>
 </body>
