@@ -4,86 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Attendance App</title>
-    <script src="https://cdn.jsdelivr.net/npm/aws-amplify@latest/dist/aws-amplify.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 600px; margin: auto; padding: 20px; }
-        input { margin: 10px 0; padding: 10px; width: 100%; }
-        button { padding: 10px; width: 100%; }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>School Attendance App</h1>
-        <input type="text" id="studentID" placeholder="Enter Student ID" />
-        <input type="text" id="attendanceStatus" placeholder="Enter Status (Present/Absent)" />
-        <button onclick="submitAttendance()">Submit Attendance</button>
-        <div id="message"></div>
-    </div>
+    <!-- Your app's HTML content goes here -->
+
+    <!-- AWS Amplify CDN -->
+    <script src="https://cdn.amplify.aws/amplify/latest/aws-amplify.min.js"></script>
 
     <script>
-        const { Amplify, Auth, API } = window.AWSAmplify;
+        // Ensure AWSAmplify is available
+        if (window.AWSAmplify) {
+            const { Amplify } = window.AWSAmplify;
 
-        window.onload = async () => {
-            try {
-                // Configure Amplify
-                Amplify.configure({
-                    Auth: {
-                        region: 'ca-central-1',
-                        userPoolId: 'ca-central-1_9WYpWIKUS',
-                        userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm'
-                    },
-                    API: {
-                        endpoints: [
-                            {
-                                name: "AttendanceAPI",
-                                endpoint: "https://5goya10q04.execute-api.ca-central-1.amazonaws.com/dev",
-                                custom_header: async () => { 
-                                    return { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` }
-                                }
-                            }
-                        ]
-                    }
-                });
+            Amplify.configure({
+                Auth: {
+                    region: 'YOUR_REGION',
+                    userPoolId: 'YOUR_USER_POOL_ID',
+                    userPoolWebClientId: 'YOUR_APP_CLIENT_ID'
+                }
+            });
 
-                console.log("Amplify configured successfully."); // Confirm Amplify is configured
-            } catch (error) {
-                console.error("Error configuring Amplify:", error);
-                document.getElementById('message').innerText = 'Error configuring Amplify. Check console for details.';
-            }
-        };
-
-        async function submitAttendance() {
-            console.log("submitAttendance function triggered."); // Debug log
-
-            const studentID = document.getElementById('studentID').value;
-            const attendanceStatus = document.getElementById('attendanceStatus').value;
-
-            if (!studentID || !attendanceStatus) {
-                document.getElementById('message').innerText = 'Please enter both Student ID and Attendance Status.';
-                console.log("Student ID or Attendance Status missing.");
-                return;
-            }
-
-            const attendanceData = { studentID, status: attendanceStatus };
-            console.log("Attendance data prepared:", attendanceData); // Debug log
-
-            // Skip API Call for Testing
-            document.getElementById('message').innerText = 'Attendance data prepared. API call skipped for testing.';
-            
-            try {
-                // Uncomment the API call below to test after verifying configuration
-                // const response = await API.post('AttendanceAPI', '/attendance', { body: attendanceData });
-                // console.log("API response:", response); // Debug log
-                // document.getElementById('message').innerText = 'Attendance submitted successfully!';
-            } catch (error) {
-                console.error("Error submitting attendance:", error); // Debug log
-                document.getElementById('message').innerText = 'Error submitting attendance: ' + error.message;
-            }
+            // Any other initialization code here
+        } else {
+            console.error("AWS Amplify is not defined!");
         }
-
-        // Expose submitAttendance function to global scope
-        window.submitAttendance = submitAttendance;
     </script>
 </body>
 </html>
