@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Attendance App</title>
+    <!-- Link to AWS Amplify -->
+    <script src="js/aws-amplify.min.js"></script>
 </head>
 <body>
+    <h1>Welcome to the School Attendance App</h1>
     <!-- Your app's HTML content goes here -->
 
-    <!-- AWS Amplify CDN -->
-    <script src="js/aws-amplify.min.js"></script>
-
-
     <script>
-        // Ensure AWSAmplify is available
-        if (window.AWSAmplify) {
+        // Check if AWSAmplify is defined
+        if (typeof window.AWSAmplify !== 'undefined') {
             const { Amplify } = window.AWSAmplify;
-
+            // Configure AWS Amplify
             Amplify.configure({
                 Auth: {
-                    region: 'ca-central-1',
-                    userPoolId: 'ca-central-1_9WYpWIKUS',
-                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm'
+                    region: 'ca-central-1', // Replace with your region
+                    userPoolId: 'ca-central-1_9WYpWIKUS', // Replace with your User Pool ID
+                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm' // Replace with your App Client ID
                 }
             });
-
-            // Any other initialization code here
         } else {
             console.error("AWS Amplify is not defined!");
         }
