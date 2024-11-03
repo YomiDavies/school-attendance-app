@@ -8,23 +8,54 @@
     <script src="js/aws-amplify.min.js"></script>
 </head>
 <body>
-    <h1>Welcome to the School Attendance App</h1>
-    <!-- Your app's HTML content goes here -->
+    <h2>Student Attendance Form</h2>
+    
+    <!-- Attendance Form -->
+    <form id="attendance-form">
+        <label for="studentNumber">Student Number:</label>
+        <input type="text" id="studentNumber" name="studentNumber" required><br><br>
 
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName" required><br><br>
+
+        <label for="attendanceStatus">Attendance Status:</label>
+        <select id="attendanceStatus" name="attendanceStatus" required>
+            <option value="present">Present</option>
+            <option value="absent">Absent</option>
+        </select><br><br>
+
+        <button type="button" onclick="submitAttendance()">Submit Attendance</button>
+    </form>
+
+    <!-- AWS Amplify Configuration and JavaScript Code -->
     <script>
-        // Check if AWSAmplify is defined
+        // Check if AWSAmplify is defined and configure it
         if (typeof window.AWSAmplify !== 'undefined') {
             const { Amplify } = window.AWSAmplify;
-            // Configure AWS Amplify
             Amplify.configure({
                 Auth: {
-                    region: 'ca-central-1', // Replace with your region
-                    userPoolId: 'ca-central-1_9WYpWIKUS', // Replace with your User Pool ID
-                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm' // Replace with your App Client ID
+                    region: 'ca-central-1', 
+                    userPoolId: 'ca-central-1_9WYpWIKUS', 
+                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm' 
                 }
             });
         } else {
             console.error("AWS Amplify is not defined!");
+        }
+
+        // Function to handle form submission
+        function submitAttendance() {
+            const studentNumber = document.getElementById('studentNumber').value;
+            const studentName = document.getElementById('studentName').value;
+            const attendanceStatus = document.getElementById('attendanceStatus').value;
+
+            // Log the attendance details
+            console.log(`Student Number: ${studentNumber}`);
+            console.log(`Student Name: ${studentName}`);
+            console.log(`Attendance Status: ${attendanceStatus}`);
+
+            // Here, you can implement saving this data with AWS Amplify DataStore or API
+            alert("Attendance submitted!");
         }
     </script>
 </body>
