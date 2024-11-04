@@ -94,17 +94,27 @@
             console.error("AWS Amplify is not defined!");
         }
 
-        function submitAttendance() {
-            const studentNumber = document.getElementById('studentNumber').value;
-            const studentName = document.getElementById('studentName').value;
-            const attendanceStatus = document.getElementById('attendanceStatus').value;
+        async function submitAttendance() {
+    const studentNumber = document.getElementById('studentNumber').value;
+    const studentName = document.getElementById('studentName').value;
+    const attendanceStatus = document.getElementById('attendanceStatus').value;
 
-            console.log(`Student Number: ${studentNumber}`);
-            console.log(`Student Name: ${studentName}`);
-            console.log(`Attendance Status: ${attendanceStatus}`);
-
-            alert("Attendance submitted!");
-        }
-    </script>
-</body>
-</html>
+    try {
+        const response = await fetch("https://your-api-endpoint.amazonaws.com/attendance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                studentNumber: studentNumber,
+                studentName: studentName,
+                attendanceStatus: attendanceStatus,
+                timestamp: new Date().toISOString()
+            })
+        });
+        if (!response.ok) throw new Error("Failed to submit attendance");
+        alert("Attendance submitted!");
+    } catch (error) {
+        console.error("Error submitting attendance:", error);
+    }
+}
