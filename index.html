@@ -120,21 +120,40 @@
         window.onload = renderStudentList;
 
         // Placeholder for the submitAttendance function
-        function submitAttendance() {
-            const date = document.getElementById("attendanceDate").value;
-            if (!date) {
-                alert("Please select a date.");
-                return;
-            }
+        async function submitAttendance() {
+    const date = document.getElementById("attendanceDate").value;
+    if (!date) {
+        alert("Please select a date.");
+        return;
+    }
 
-            const attendanceRecords = studentNames.map((name, index) => {
-                const status = document.querySelector(`select[name="attendance_${index}"]`).value;
-                return { name, date, status };
-            });
+    const attendanceRecords = studentNames.map((name, index) => {
+        const status = document.querySelector(`select[name="attendance_${index}"]`).value;
+        return { name, date, status };
+    });
 
-            console.log("Attendance Records:", attendanceRecords); // For now, just logging
-            alert("Attendance submitted! (For demonstration purposes)");
+    try {
+        const response = await fetch('https://a1xalzj19k.execute-api.ca-central-1.amazonaws.com/Production', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ date, attendanceRecords })
+        });
+
+        if (response.ok) {
+            alert("Attendance submitted successfully!");
+        } else {
+            const errorData = await response.json();
+            console.error("Error submitting attendance:", errorData);
+            alert("Failed to submit attendance.");
         }
+    } catch (error) {
+        console.error("Error submitting attendance:", error);
+        alert("Failed to submit attendance.");
+    }
+}
+
     </script>
 </body>
 </html>
