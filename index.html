@@ -4,57 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Attendance App</title>
+    <style>
+        /* Page background */
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Form container styling */
+        #attendance-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Form elements styling */
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
     <!-- Link to AWS Amplify -->
     <script src="js/aws-amplify.min.js"></script>
 </head>
 <body>
-    <h2>Student Attendance Application</h2>
-    
-    <!-- Attendance Form -->
     <form id="attendance-form">
+        <h2>Student Attendance Form</h2>
         <label for="studentNumber">Student Number:</label>
-        <input type="text" id="studentNumber" name="studentNumber" required><br><br>
+        <input type="text" id="studentNumber" name="studentNumber" required>
 
         <label for="studentName">Student Name:</label>
-        <input type="text" id="studentName" name="studentName" required><br><br>
+        <input type="text" id="studentName" name="studentName" required>
 
         <label for="attendanceStatus">Attendance Status:</label>
         <select id="attendanceStatus" name="attendanceStatus" required>
             <option value="present">Present</option>
             <option value="absent">Absent</option>
-        </select><br><br>
+        </select>
 
         <button type="button" onclick="submitAttendance()">Submit Attendance</button>
     </form>
 
-    <!-- AWS Amplify Configuration and JavaScript Code -->
     <script>
-        // Check if AWSAmplify is defined and configure it
         if (typeof window.AWSAmplify !== 'undefined') {
             const { Amplify } = window.AWSAmplify;
             Amplify.configure({
                 Auth: {
-                    region: 'ca-central-1', 
-                    userPoolId: 'ca-central-1_9WYpWIKUS', 
-                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm' 
+                    region: 'ca-central-1',
+                    userPoolId: 'ca-central-1_9WYpWIKUS',
+                    userPoolWebClientId: '1srt8gg95jjdee10p31lmcdurm'
                 }
             });
         } else {
             console.error("AWS Amplify is not defined!");
         }
 
-        // Function to handle form submission
         function submitAttendance() {
             const studentNumber = document.getElementById('studentNumber').value;
             const studentName = document.getElementById('studentName').value;
             const attendanceStatus = document.getElementById('attendanceStatus').value;
 
-            // Log the attendance details
             console.log(`Student Number: ${studentNumber}`);
             console.log(`Student Name: ${studentName}`);
             console.log(`Attendance Status: ${attendanceStatus}`);
 
-            // Here, you can implement saving this data with AWS Amplify DataStore or API
             alert("Attendance submitted!");
         }
     </script>
