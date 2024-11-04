@@ -4,156 +4,245 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Attendance App</title>
-    <!-- Use CDN for AWS Amplify if needed -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-amplify/4.3.10/aws-amplify.min.js"></script>
     <style>
-        /* Styling adjustments */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #f0f8ff; /* Light blue background */
+            color: #333;
+            padding: 20px;
+            text-align: center;
         }
         h1 {
-            text-align: center;
-            color: #333;
-            font-size: 24px;
+            color: #0056b3; /* Dark blue color for the title */
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
         }
-        .attendance-form {
-            width: 100%;
-            max-width: 700px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-        label, h2 {
-            font-size: 16px;
-            color: #555;
-        }
-        .student-record {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-        }
-        select {
-            padding: 5px;
+        th, td {
             border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #0056b3; /* Dark blue header */
+            color: white;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #28a745; /* Green button */
             color: white;
-            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            padding: 10px 15px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #218838; /* Darker green on hover */
         }
     </style>
+    <script src="js/aws-amplify.min.js"></script>
 </head>
 <body>
-    <!-- Title at the top -->
     <h1>School Attendance App</h1>
-
-    <div class="attendance-form">
-        <!-- Date input -->
-        <label for="attendanceDate">Select Date:</label>
-        <input type="date" id="attendanceDate" required>
-
-        <h2>Mark Attendance</h2>
-
-        <!-- Attendance list and form content goes here -->
-        <form id="attendance-form">
-            <!-- Student list will be populated here -->
-        </form>
-
-        <!-- Submit button -->
-        <button type="button" onclick="submitAttendance()">Submit Attendance</button>
-    </div>
+    <h2>Select Date: <input type="date" id="attendanceDate" required></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Attendance Status</th>
+            </tr>
+        </thead>
+        <tbody id="attendanceTableBody">
+            <!-- Add 15 student entries -->
+            <tr>
+                <td>John Doe</td>
+                <td>
+                    <select id="status1">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>
+                    <select id="status2">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Michael Johnson</td>
+                <td>
+                    <select id="status3">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <!-- Add more student rows as needed -->
+            <tr>
+                <td>Emily Davis</td>
+                <td>
+                    <select id="status4">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Chris Evans</td>
+                <td>
+                    <select id="status5">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Jessica Brown</td>
+                <td>
+                    <select id="status6">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>David Wilson</td>
+                <td>
+                    <select id="status7">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Sarah Moore</td>
+                <td>
+                    <select id="status8">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Daniel Taylor</td>
+                <td>
+                    <select id="status9">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Laura Anderson</td>
+                <td>
+                    <select id="status10">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Matthew Thomas</td>
+                <td>
+                    <select id="status11">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Amanda Jackson</td>
+                <td>
+                    <select id="status12">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Kevin White</td>
+                <td>
+                    <select id="status13">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Olivia Harris</td>
+                <td>
+                    <select id="status14">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>James Clark</td>
+                <td>
+                    <select id="status15">
+                        <option value="None" selected>None</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="submitAttendance()">Submit Attendance</button>
 
     <script>
-        // List of student names
-        const studentNames = [
-            "John Doe", "Jane Smith", "Michael Johnson", "Emily Davis",
-            "Chris Brown", "Jessica Wilson", "Matthew Jones", "Sarah Garcia",
-            "David Miller", "Samantha Martinez", "Andrew Anderson", "Rachel Lee",
-            "Laura White", "Daniel Harris", "Natalie Clark"
-        ];
-
-        // Function to render student list with dropdowns
-        function renderStudentList() {
-            const form = document.getElementById("attendance-form");
-            form.innerHTML = ""; // Clear any existing content
-
-            studentNames.forEach((name, index) => {
-                const studentRecord = document.createElement("div");
-                studentRecord.className = "student-record";
-
-                const label = document.createElement("label");
-                label.innerText = name;
-
-                const select = document.createElement("select");
-                select.name = `attendance_${index}`;
-                select.innerHTML = `
-                    <option value="None" selected>None</option>
-                    <option value="Present">Present</option>
-                    <option value="Absent">Absent</option>
-                `;
-
-                studentRecord.appendChild(label);
-                studentRecord.appendChild(select);
-                form.appendChild(studentRecord);
-            });
-        }
-
-        // Call the function to render the student list on page load
-        window.onload = renderStudentList;
-
-        // Placeholder for the submitAttendance function
         async function submitAttendance() {
-    const date = document.getElementById("attendanceDate").value;
-    if (!date) {
-        alert("Please select a date.");
-        return;
-    }
+            const date = document.getElementById('attendanceDate').value;
 
-    const attendanceRecords = studentNames.map((name, index) => {
-        const status = document.querySelector(`select[name="attendance_${index}"]`).value;
-        return { name, date, status };
-    });
+            const attendanceData = [];
+            for (let i = 1; i <= 15; i++) {
+                const studentName = document.querySelector(`tbody tr:nth-child(${i}) td:first-child`).innerText;
+                const status = document.getElementById(`status${i}`).value;
+                attendanceData.push({ studentName, date, status });
+            }
 
-    try {
-        const response = await fetch('https://a1xalzj19k.execute-api.ca-central-1.amazonaws.com/Production', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ date, attendanceRecords })
-        });
+            try {
+                const response = await fetch('https://<api-id>.execute-api.<region>.amazonaws.com/prod/attendance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(attendanceData),
+                });
 
-        if (response.ok) {
-            alert("Attendance submitted successfully!");
-        } else {
-            const errorData = await response.json();
-            console.error("Error submitting attendance:", errorData);
-            alert("Failed to submit attendance.");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log(result.message);
+                alert('Attendance submitted successfully!');
+            } catch (error) {
+                console.error('Failed to submit attendance:', error);
+                alert('Failed to submit attendance');
+            }
         }
-    } catch (error) {
-        console.error("Error submitting attendance:", error);
-        alert("Failed to submit attendance.");
-    }
-}
-
     </script>
 </body>
 </html>
