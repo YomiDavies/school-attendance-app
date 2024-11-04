@@ -33,7 +33,32 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
-        /* Rest of your styles */
+        label, h2 {
+            font-size: 16px;
+            color: #555;
+        }
+        .student-record {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+        select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +82,59 @@
     </div>
 
     <script>
-        // Your JavaScript for handling attendance submission and student list generation
+        // List of student names
+        const studentNames = [
+            "John Doe", "Jane Smith", "Michael Johnson", "Emily Davis",
+            "Chris Brown", "Jessica Wilson", "Matthew Jones", "Sarah Garcia",
+            "David Miller", "Samantha Martinez", "Andrew Anderson", "Rachel Lee",
+            "Laura White", "Daniel Harris", "Natalie Clark"
+        ];
+
+        // Function to render student list with dropdowns
+        function renderStudentList() {
+            const form = document.getElementById("attendance-form");
+            form.innerHTML = ""; // Clear any existing content
+
+            studentNames.forEach((name, index) => {
+                const studentRecord = document.createElement("div");
+                studentRecord.className = "student-record";
+
+                const label = document.createElement("label");
+                label.innerText = name;
+
+                const select = document.createElement("select");
+                select.name = `attendance_${index}`;
+                select.innerHTML = `
+                    <option value="None" selected>None</option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                `;
+
+                studentRecord.appendChild(label);
+                studentRecord.appendChild(select);
+                form.appendChild(studentRecord);
+            });
+        }
+
+        // Call the function to render the student list on page load
+        window.onload = renderStudentList;
+
+        // Placeholder for the submitAttendance function
+        function submitAttendance() {
+            const date = document.getElementById("attendanceDate").value;
+            if (!date) {
+                alert("Please select a date.");
+                return;
+            }
+
+            const attendanceRecords = studentNames.map((name, index) => {
+                const status = document.querySelector(`select[name="attendance_${index}"]`).value;
+                return { name, date, status };
+            });
+
+            console.log("Attendance Records:", attendanceRecords); // For now, just logging
+            alert("Attendance submitted! (For demonstration purposes)");
+        }
     </script>
 </body>
 </html>
